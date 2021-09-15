@@ -1,9 +1,12 @@
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import 'package:flutter_web_dashboard/constants/style.dart';
 import 'package:flutter_web_dashboard/widgets/custom_text.dart';
-
 import '../tasks.dart';
 
+// ignore: camel_case_types
 class new_task extends StatefulWidget {
   const new_task({key}) : super(key: key);
 
@@ -12,14 +15,19 @@ class new_task extends StatefulWidget {
 }
 
 class _new_taskState extends State<new_task> {
+  final format = DateFormat("yyyy-MM-dd");
   @override
   Widget build(BuildContext context) {
-    String dropdownvalue = 'None';
+    String name_value;
     var items = [
       'None',
       'Vikram',
       'Patil',
     ];
+
+    String catogary_value;
+    var catogary_list = ['Kitchen', 'Bathroom', 'Living Room'];
+
     return Container(
         child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,15 +70,18 @@ class _new_taskState extends State<new_task> {
           weight: FontWeight.bold,
         ),
         SizedBox(height: 10),
-        Container(
-          height: 50,
-          width: 300,
-          child: TextField(
-            decoration: InputDecoration(
-                hintText: "HouseHold",
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20))),
-          ),
+        DropdownButton(
+          hint: Text('Select Catogary'),
+          value: catogary_value,
+          icon: Icon(Icons.keyboard_arrow_down),
+          onChanged: (newValue) {
+            setState(() {
+              catogary_value = newValue;
+            });
+          },
+          items: catogary_list.map((items) {
+            return DropdownMenuItem(value: items, child: Text(items));
+          }).toList(),
         ),
         SizedBox(height: 20),
         Row(children: [
@@ -80,7 +91,7 @@ class _new_taskState extends State<new_task> {
             size: 15,
             weight: FontWeight.bold,
           ),
-          SizedBox(width: 320),
+          SizedBox(width: 270),
           CustomText(
             text: "End Date",
             color: active,
@@ -96,53 +107,41 @@ class _new_taskState extends State<new_task> {
                 Container(
                   height: 50,
                   width: 300,
-                  child: TextField(
+                  child: DateTimeField(
                     decoration: InputDecoration(
                         hintText: "DD/MM/YYYY",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20))),
+                    format: format,
+                    onShowPicker: (context, currentValue) {
+                      return showDatePicker(
+                          context: context,
+                          firstDate: DateTime(1900),
+                          initialDate: currentValue ?? DateTime.now(),
+                          lastDate: DateTime(2100));
+                    },
                   ),
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                IconButton(
-                  icon: Icon(Icons.calendar_today),
-                  onPressed: () {
-                    showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2015, 8),
-                      lastDate: DateTime(2101),
-                    );
-                  },
                 ),
                 SizedBox(width: 30),
                 SizedBox(width: 10),
                 Container(
                   height: 50,
                   width: 300,
-                  child: TextField(
+                  child: DateTimeField(
                     decoration: InputDecoration(
-                        hintText: "DD/YY/MM",
+                        hintText: "DD/MM/YYYY",
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20))),
+                    format: format,
+                    onShowPicker: (context, currentValue) {
+                      return showDatePicker(
+                          context: context,
+                          firstDate: DateTime(1900),
+                          initialDate: currentValue ?? DateTime.now(),
+                          lastDate: DateTime(2100));
+                    },
                   ),
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                IconButton(
-                  icon: Icon(Icons.calendar_today),
-                  onPressed: () {
-                    showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(2015, 8),
-                      lastDate: DateTime(2101),
-                    );
-                  },
-                ),
+                )
               ],
             ),
           ],
@@ -162,7 +161,7 @@ class _new_taskState extends State<new_task> {
               width: 300,
               child: TextField(
                 decoration: InputDecoration(
-                    hintText: "TODO",
+                    hintText: "Add the list of Tasks",
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20))),
               ),
@@ -187,14 +186,15 @@ class _new_taskState extends State<new_task> {
         Row(
           children: [
             DropdownButton(
-              value: dropdownvalue,
+              hint: Text('Select a Person'),
+              value: name_value,
               icon: Icon(Icons.keyboard_arrow_down),
               items: items.map((String items) {
                 return DropdownMenuItem(value: items, child: Text(items));
               }).toList(),
               onChanged: (String newValue) {
                 setState(() {
-                  dropdownvalue = newValue;
+                  name_value = newValue;
                 });
               },
             ),
@@ -230,6 +230,30 @@ class _new_taskState extends State<new_task> {
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     child: CustomText(
                       text: "Done",
+                      color: active,
+                      weight: FontWeight.bold,
+                    )),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const DriversPage()),
+                  );
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                      color: light,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: active, width: 0),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    child: CustomText(
+                      text: "Cancel",
                       color: active,
                       weight: FontWeight.bold,
                     )),

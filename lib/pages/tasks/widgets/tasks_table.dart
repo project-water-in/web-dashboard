@@ -31,6 +31,10 @@ class DriversTable extends StatelessWidget {
               minWidth: 600,
               columns: [
                 DataColumn2(
+                  label: Text("Catogary"),
+                  size: ColumnSize.L,
+                ),
+                DataColumn2(
                   label: Text("Title"),
                   size: ColumnSize.L,
                 ),
@@ -50,6 +54,7 @@ class DriversTable extends StatelessWidget {
               rows: List<DataRow>.generate(
                   7,
                   (index) => DataRow(cells: [
+                        DataCell(CustomText(text: "Kitchen")),
                         DataCell(CustomText(text: "Pumbling Problems")),
                         DataCell(CustomText(
                             text: "Having an Issue with the Tap Water")),
