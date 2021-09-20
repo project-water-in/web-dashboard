@@ -27,7 +27,7 @@ Step 3. Now your application can be accessed at ```http://localhost:52266/```
 
 Note : <b>No Credentials Required and State Management is not yet properly done as of now but its presentable.</b>  
 
-Thank you Ammar, Sorry about delaying it for this long. :)
+
 
 
 
